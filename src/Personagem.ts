@@ -29,6 +29,7 @@ export default class Personagem {
         if (vida >= 0) {
             this.vida = vida;
         } else {
+            this.vida = 0;
             console.log("A vida não pode ser negativa");
         }
     }
@@ -49,11 +50,11 @@ export default class Personagem {
         this.arma = arma;
     }
 
-    private chanceDeAtaque(): boolean {
+    protected chanceDeAtaque(): boolean {
         return Math.random() > 0.5;
     }
 
-    private calcularDano(): number {
+    protected calcularDano(): number {
         return this.forca + (this.arma ? this.arma.getDano() : 0);
     }
 
