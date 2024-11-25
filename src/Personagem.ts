@@ -1,16 +1,19 @@
 import Arma from "./Arma";
+import Magia from "./Magia";
 
 export default class Personagem {
     private nome: string;
     private vida: number;
     private forca: number;
     private arma: Arma | null;
+    private magia: Magia | null;
 
-    constructor(nome: string, vida: number, forca: number, arma: Arma | null = null) {
+    constructor(nome: string, vida: number, forca: number, arma: Arma | null = null, magia: Magia | null = null) {
         this.nome = nome;
         this.vida = vida;
         this.forca = forca;
         this.arma = arma;
+        this.magia = magia;
     }
 
     public getNome(): string {
@@ -85,5 +88,42 @@ export default class Personagem {
         if (this.vida <= 0) {
             console.log(`${this.nome} foi derrotado!`);
         }
+    }
+
+    public getMagia(): Magia | null {
+        return this.magia;
+    }
+
+    // Implementado método para uso de magia no Personagem
+    public usarMagia(alvo?: Personagem): void {
+        if (!this.magia) {
+            console.log(`${this.nome} não tem uma magia para usar.`);
+            return;
+        }
+    
+        if (!this.magia.podeUsar()) {
+            console.log(`${this.nome} já utilizou todas as vezes permitidas a magia ${this.magia.getNome()}.`);
+            return;
+        }
+    
+        this.magia.usar();
+    
+        // Verifica se a magia é de ataque ou cura e executa a ação correspondente
+        if (this.magia.getTipo() === 'Ataque') {
+            if (alvo) {
+                const dano = this.magia.getIntensidade();
+                console.log(`${this.nome} usou a magia ${this.magia.getNome()} causando ${dano} de dano em ${alvo.getNome()}.`);
+                alvo.receberDano(dano);
+                this.magia = null; 
+            } else {
+                console.log(`Magia de ataque precisa de um alvo.`);
+            }
+        } else if (this.magia.getTipo() === 'Cura') {
+            const cura = this.magia.getIntensidade();
+            this.setVida(this.getVida() + cura);
+            console.log(`${this.nome} usou a magia ${this.magia.getNome()} e recuperou ${cura} de vida.`);
+        }
+    
+        console.log(`Usos restantes para a magia ${this.magia?.getNome()}: ${this.magia?.getUsosRestantes()}`);
     }
 }

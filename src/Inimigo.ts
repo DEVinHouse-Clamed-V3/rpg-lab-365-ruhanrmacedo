@@ -1,9 +1,10 @@
 import Personagem from "./Personagem";
 import Arma from "./Arma";
+import Magia from "./Magia";
 
 export default class Inimigo extends Personagem {
-    constructor(nome: string, vida: number, forca: number, arma: Arma | null = null) {
-        super(nome, vida, forca, arma);
+    constructor(nome: string, vida: number, forca: number, arma: Arma | null = null, magia: Magia | null = null) {
+        super(nome, vida, forca, arma, magia);
     }
 
     protected chanceDeAtaque(): boolean {
@@ -36,4 +37,8 @@ export default class Inimigo extends Personagem {
             console.log(`${this.getNome()} está observando.`);
         }
     }
+
+    public usarMagia(alvo?: Personagem): void {
+        super.usarMagia(alvo);
+    } 
 }
